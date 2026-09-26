@@ -17,7 +17,6 @@ spec:
       containers:
       - name: zurich-weather-app
         image: jameshagar4/gitops-k8s-deployments:main
-        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         # resources:

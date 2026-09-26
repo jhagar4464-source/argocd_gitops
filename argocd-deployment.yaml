@@ -12,3 +12,7 @@ spec:
     repoURL: https://github.com/jhagar4464-source/argocd_gitops.git
     path: deployment
     targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

@@ -25,9 +25,6 @@ jobs:
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: jameshagar4/gitops-k8s-deployments
-          tags: |
-            type=sha,prefix=,format=short
-            type=ref,event=branch
           
       - name: Build and push Docker image
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
@@ -35,16 +32,5 @@ jobs:
           context: ./src
           file: ./src/dockerfile
           push: true
-          no-cache: true
           tags:  ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
-      - name: Update deployment image tag
-        run: |
-          SHA_TAG=$(echo "${{ github.sha }}" | cut -c1-7)
-          sed -i "s|image: jameshagar4/gitops-k8s-deployments:.*|image: jameshagar4/gitops-k8s-deployments:${SHA_TAG}|" deployment/deployment.yaml
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add deployment/deployment.yaml
-          git commit -m "chore: update image tag to ${SHA_TAG}"
-          git push
